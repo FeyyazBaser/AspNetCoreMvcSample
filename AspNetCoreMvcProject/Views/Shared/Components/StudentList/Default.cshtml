@@ -1,0 +1,7 @@
+﻿@model AspNetCoreMvcSample.Models.StudentListWiewModel
+
+@foreach(var student in Model.Students)
+{
+    <br/>
+    <h5 style="color:brown">@student.FirstName @student.LastName</h5>
+}

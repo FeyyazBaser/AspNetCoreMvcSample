@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        Navigation
+    </div>
+    <div>
+        @await Component.InvokeAsync("StudentList")
+    </div>
+    <div>
+        @RenderBody()
+        @RenderSection("FirstSection",false)
+    </div>
+    <div>
+        Footer
+    </div>
+</body>
+</html>

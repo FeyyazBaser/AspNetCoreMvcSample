@@ -1,0 +1,35 @@
+﻿@using AspNetCoreMvcSample.Entities;
+@using AspNetCoreMvcSample.Models
+
+@model EmployeeAddViewModel;
+
+  <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+<form asp-controller="Employee" asp-action="Add">
+
+    Id : <input asp-for="Employee.Id" /><br />
+    First Name: <input asp-for="Employee.FirstName" /><br />
+    Last Name: <input asp-for="Employee.LastName" /><br />
+    CityIdInput : <input asp-for="Employee.CityId" /><br />
+
+    CityIdSelect : <select asp-for="Employee.CityId" asp-items="Model.Cities"></select><br />
+
+    <input class ="btn btn-primary" type="submit" value="Add" />
+</form>
+
+<br />
+<br />
+<employee-list count="2"></employee-list>
+
+@section FirstSection{
+    Section Content 
+}
+
+@{
+    // form asp-controller asp-action => form TagHelper
+    // input asp-for => input TagHelper
+    // select asp-for asp-items =>select TagHelper
+
+    // @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers => _ViewImports.cshtml içerisine taşıdık merkezi bi yerden yapmış olduk
+    // @section SectionName{} => Sadece ilgili sayfanın ilgili kısmını değiştirmek için yazılır 
+}

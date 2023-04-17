@@ -1,0 +1,6 @@
+﻿@{
+    Exception exception = ViewData["HandleException"] as Exception;
+}
+
+<h3>@exception.Message</h3>
+<h3>@exception.StackTrace</h3>

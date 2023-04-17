@@ -1,0 +1,8 @@
+﻿
+
+@using(Html.BeginForm("Index9","Home")) // Submit olduğunda gitmesini istediğim action  Index9 ve controller Home bunları paratmetre olarak veriyorum... FORM DATA MODEL BINDING
+{
+    <b>Key :</b>
+    @Html.TextBox("key");
+    <input type="submit" value="Search"/> 
+}

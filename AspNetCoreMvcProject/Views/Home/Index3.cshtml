@@ -1,0 +1,71 @@
+﻿@using AspNetCoreMvcSample.Models;
+@model EmployeeListViewModel
+@{
+
+    <table>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Ad
+            </th>
+            <th>
+                Soyad
+            </th>
+            <th>
+                Şehir Plakası
+            </th>
+        </tr>
+
+
+        @foreach (var item in Model.Employees)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.CityId
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <table>
+        <tr>
+            <th>
+                Şehirler
+            </th>
+        </tr>
+
+
+        @foreach (var item in Model.cities)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+    @using (Html.BeginForm())
+    {
+        <input type="text" id="" name="" />
+        <button type="submit"> Kaydet</button>
+
+       
+    }
+
+
+}
