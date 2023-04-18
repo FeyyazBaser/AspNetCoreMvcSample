@@ -1,15 +1,58 @@
 using AspNetCoreMvcSample.Helpers;
+using AspNetCoreMvcSample.Identity;
 using AspNetCoreMvcSample.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddMvc();
-var connectionString = "Data Source=.;Initial Catalog=School;Integrated Security=True;";
-builder.Services.AddDbContext<SchoolContext>(options=>options.UseSqlServer(connectionString));
+
+
+var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
+builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<AppIdentityUser, AppIdentiyRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders(); // Identity
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+
+    options.Lockout.MaxFailedAccessAttempts = 5; // Hatalý þifre girince uyarý
+    options.Lockout.DefaultLockoutTimeSpan= TimeSpan.FromMinutes(3);  // Hatalý girebileceði kadar girdikten sonra 3 dk izin vermez
+    options.Lockout.AllowedForNewUsers = true;
+
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+}
+);
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Security/Login";
+    options.LogoutPath = "/Security/Logout";
+    options.AccessDeniedPath = "/Security/AccessDenied";
+    options.SlidingExpiration = true;  // Cookienin aktif kalma süresi 30 dk ise 25. dkda login olunursa yenilenmesi için
+
+    //options.Cookie = new CookieBuilder
+    //{
+
+    //};
+
+});
+
+
+
+
 builder.Services.AddScoped<ICalculate, VatCalculate>(); // çok instance bellekten kaldýrýlýr
 
 builder.Services.AddSession();  // Session ekleme sepetteki ürünleri tutmak için kullanýlabilir cacheleme cookie
@@ -27,16 +70,18 @@ var data = app.Environment.IsDevelopment();
 
 if (!app.Environment.IsDevelopment())
 {
-    
+
     app.UseDeveloperExceptionPage();
     //The default HSTS value is 30 days.You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 
 }
 else
-app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Error");
 
 app.UseSession();
+
+app.UseAuthentication(); // Authentication middleware
 
 app.MapControllerRoute(
     name: "default",
@@ -44,7 +89,6 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
 
 app.MapControllerRoute(
     name: "feyyaz",
