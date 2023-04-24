@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreMvcSample.Entities;
 using AspNetCoreMvcSample.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetCoreMvcSample.Controllers
 {
@@ -20,6 +21,7 @@ namespace AspNetCoreMvcSample.Controllers
         }
 
         // GET: Student
+   
         public async Task<IActionResult> Index()
         {
             var schoolContext = _context.Students.Include(s => s.Teacher);

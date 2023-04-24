@@ -1,6 +1,7 @@
 ﻿using AspNetCoreMvcSample.Entities;
 using AspNetCoreMvcSample.Filters;
 using AspNetCoreMvcSample.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security;
 
@@ -8,6 +9,7 @@ namespace AspNetCoreMvcSample.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public string Index()
         {
             return "Projemize Hoşgeldiniz";

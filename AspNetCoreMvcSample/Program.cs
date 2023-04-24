@@ -2,9 +2,9 @@ using AspNetCoreMvcSample.Helpers;
 using AspNetCoreMvcSample.Identity;
 using AspNetCoreMvcSample.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +15,7 @@ builder.Services.AddMvc();
 
 var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 builder.Services.AddDbContext<SchoolContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<AppIdentityUser, AppIdentiyRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders(); // Identity
 
@@ -36,17 +37,22 @@ builder.Services.Configure<IdentityOptions>(options =>
 }
 );
 
-builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.ConfigureApplicationCookie(options =>  // Cookie konfigürasyonu
 {
     options.LoginPath = "/Security/Login";
     options.LogoutPath = "/Security/Logout";
     options.AccessDeniedPath = "/Security/AccessDenied";
     options.SlidingExpiration = true;  // Cookienin aktif kalma süresi 30 dk ise 25. dkda login olunursa yenilenmesi için
+    //options.Cookie = new CookieBuilder();
 
-    //options.Cookie = new CookieBuilder
-    //{
-
-    //};
+    options.Cookie = new CookieBuilder
+    {
+        HttpOnly = true,
+        Name = "AspNetCoreMvcSample.Security.Cookie",
+        Path = "/",
+        SameSite = SameSiteMode.Lax,
+        SecurePolicy = CookieSecurePolicy.SameAsRequest
+    };
 
 });
 
@@ -66,9 +72,9 @@ var app = builder.Build();
 app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 
-var data = app.Environment.IsDevelopment();
+app.Environment.EnvironmentName = Microsoft.AspNetCore.Hosting.EnvironmentName.Production;
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
 
     app.UseDeveloperExceptionPage();

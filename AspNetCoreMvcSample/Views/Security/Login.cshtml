@@ -1,0 +1,46 @@
+﻿@model AspNetCoreMvcSample.Models.Security.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+
+    <div class="container">
+        <h4>Login Form</h4>
+        <hr />
+        <div class="col-md-4">
+            <form asp-action="Login">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+               
+                <div class="form-group" style="margin-top:10px">
+                    <input type="submit" value="Login" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+
+
+</body>
+</html>
