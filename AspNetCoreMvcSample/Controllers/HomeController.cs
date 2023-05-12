@@ -10,9 +10,9 @@ namespace AspNetCoreMvcSample.Controllers
     public class HomeController : Controller
     {
         [Authorize]
-        public string Index()
+        public IActionResult Index()
         {
-            return "Projemize Hoşgeldiniz";
+            return View();
         }
 
         [HandleException(ViewName = "DivideByZeroError", ExceptionType =typeof(DivideByZeroException))]
